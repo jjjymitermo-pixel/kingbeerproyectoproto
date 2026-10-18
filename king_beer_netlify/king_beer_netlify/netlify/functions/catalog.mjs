@@ -9,3 +9,8 @@ export default async (request) => {
     return json({ error: "No se pudo cargar el catálogo." }, 500);
   }
 };
+
+export const config = {
+  path: "/api/catalog",
+  rateLimit: { windowLimit: 60, windowSize: 60, aggregateBy: ["ip", "domain"] }
+};

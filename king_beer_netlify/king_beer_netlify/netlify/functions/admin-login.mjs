@@ -6,3 +6,8 @@ export default async (request) => {
   if (!result.ok) return result.response;
   return json({ ok: true });
 };
+
+export const config = {
+  path: "/api/admin/login-check",
+  rateLimit: { windowLimit: 5, windowSize: 60, aggregateBy: ["ip", "domain"] }
+};

@@ -24,3 +24,8 @@ export default async (request) => {
     return json({ error: "No se pudo guardar el catálogo. Inténtalo de nuevo." }, 500);
   }
 };
+
+export const config = {
+  path: "/api/admin/catalog",
+  rateLimit: { windowLimit: 5, windowSize: 60, aggregateBy: ["ip", "domain"] }
+};
