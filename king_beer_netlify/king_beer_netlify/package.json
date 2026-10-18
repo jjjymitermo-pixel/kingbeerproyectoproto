@@ -1,0 +1,17 @@
+{
+  "name": "king-beer-netlify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "King Beer IA con Netlify Functions, OpenRouter y catálogo persistente",
+  "type": "module",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site ready'"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^8.2.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^20.0.0"
+  }
+}

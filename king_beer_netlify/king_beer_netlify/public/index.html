@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#7026d9">
+<title>King Beer IA · Encuentra tu sabor</title>
+<style>
+:root{--ink:#26113f;--purple:#782de0;--pink:#ff5ebc;--yellow:#ffd44f;--mint:#8ef3cf;--paper:#fffaff;--muted:#725d83;--line:#f0ddfa}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:ui-rounded,"Trebuchet MS",system-ui,sans-serif;background:linear-gradient(140deg,#fff0fb,#f3eaff 45%,#e5fff7);min-height:100vh;overflow-x:hidden}
+.bubbles{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-1}.bubble{position:absolute;bottom:-90px;border-radius:50%;border:2px solid #fff9;background:linear-gradient(135deg,#ff9ed844,#9b72ff38);animation:floatUp linear infinite}@keyframes floatUp{from{transform:translateY(0) translateX(0) rotate(0);opacity:0}10%{opacity:.7}90%{opacity:.5}to{transform:translateY(-120vh) translateX(50px) rotate(200deg);opacity:0}}
+header{max-width:1160px;margin:auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font-size:1.25rem;font-weight:1000;letter-spacing:1px}.brand b{color:var(--purple)}.top-pill{background:whitec0;background:#ffffffc9;border:1px solid #fff;border-radius:999px;padding:9px 13px;font-size:.8rem;font-weight:800}
+main{max-width:1160px;margin:auto;padding:20px 24px 64px}.hero{text-align:center;padding:30px 0 34px}.kicker{display:inline-block;background:#fff;border:1px solid #f5d8ff;border-radius:99px;padding:8px 14px;color:#8b31c8;font-size:.76rem;letter-spacing:1.3px;text-transform:uppercase;font-weight:900}
+h1{font-size:clamp(2.5rem,7vw,5rem);line-height:.99;letter-spacing:-2px;margin:20px 0 16px}.gradient{background:linear-gradient(90deg,#852be2,#f14fa8,#f29d32);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);font-size:1.04rem;line-height:1.7;max-width:640px;margin:auto}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.03fr);gap:22px;align-items:start}.card{background:#ffffffd9;backdrop-filter:blur(12px);border:1px solid #fff;border-radius:27px;padding:clamp(19px,3vw,29px);box-shadow:0 18px 55px #6524a515}.card h2{margin:0 0 7px;font-size:1.35rem}.muted{color:var(--muted);line-height:1.6;font-size:.92rem;margin:0 0 20px}.label{display:block;font-weight:900;margin:18px 0 10px;font-size:.91rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{font:inherit;font-size:.86rem;font-weight:800;color:var(--ink);background:white;border:1.5px solid var(--line);border-radius:99px;padding:10px 13px;cursor:pointer;transition:.18s}.chip:hover{transform:translateY(-2px);border-color:#c6a0fa}.chip.active{background:#f0ddff;border-color:#9b4bea;box-shadow:0 0 0 2px #9b4bea18}
+select,textarea,input{width:100%;border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:13px;color:var(--ink);font:inherit}textarea{resize:vertical;min-height:75px}select:focus,textarea:focus,input:focus{outline:3px solid #b77bfa55}
+.btn{border:0;border-radius:15px;padding:14px 18px;font:inherit;font-weight:950;cursor:pointer;transition:.18s}.btn:hover{transform:translateY(-2px);filter:saturate(1.1)}.btn-main{width:100%;margin-top:21px;color:white;background:linear-gradient(100deg,#7b2bde,#e94fae);box-shadow:0 9px 24px #a33cce36}.btn-light{background:white;border:1px solid var(--line);color:var(--purple)}.row{display:flex;gap:9px}.row>*{flex:1}
+.tabs{display:flex;gap:7px;margin-bottom:17px}.tab{flex:1;background:#f8efff;color:#7c37bb;border:1px solid transparent;padding:10px;border-radius:12px;font:inherit;font-weight:900;cursor:pointer}.tab.active{background:#7c2cdb;color:white}
+.chat{display:flex;flex-direction:column;min-height:520px}.chat-title{display:flex;align-items:center;gap:12px;margin-bottom:14px}.avatar{width:48px;height:48px;display:grid;place-items:center;background:linear-gradient(135deg,#ffe17b,#ff8cc9);border-radius:17px;font-size:1.65rem;box-shadow:0 7px 15px #d65ab92b}.online{font-size:.75rem;color:#23936c;font-weight:850}.messages{flex:1;min-height:280px;max-height:430px;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:5px 2px 15px}.bubble-msg{max-width:91%;padding:13px 15px;border-radius:18px;white-space:pre-wrap;line-height:1.6;font-size:.92rem;overflow-wrap:anywhere}.bot{align-self:flex-start;background:#f5eaff;border:1px solid #ead8ff;border-bottom-left-radius:5px}.user{align-self:flex-end;background:linear-gradient(120deg,#7e30db,#c146c8);color:white;border-bottom-right-radius:5px}.composer{display:flex;gap:8px;align-items:end}.composer textarea{min-height:50px;max-height:130px;flex:1}.send{width:52px;height:50px;border-radius:15px;background:var(--yellow);border:0;font-size:1.2rem;cursor:pointer}.send:disabled{opacity:.5;cursor:wait}.typing{color:var(--muted);font-size:.85rem;padding:3px 4px}.hidden{display:none!important}
+details{margin-top:17px;border-top:1px solid var(--line);padding-top:15px}summary{cursor:pointer;font-weight:900}#catalogContent{line-height:1.85;color:var(--muted);font-size:.88rem}.catalog-chips{display:flex;flex-wrap:wrap;gap:7px}.catalog-chips span{background:#fff;border:1px solid var(--line);padding:6px 9px;border-radius:9px;font-size:.8rem}
+.admin{margin-top:20px}.admin textarea{min-height:300px;font-family:ui-monospace,monospace;font-size:.82rem}.admin-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.status{font-size:.85rem;margin-top:9px;color:#25865d}.status.error{color:#c02b61}.foot{text-align:center;color:#876b9d;font-size:.8rem;margin-top:30px}.tiny{font-size:.77rem;color:var(--muted);line-height:1.5}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.hero{padding-top:14px}.chat{min-height:460px}.messages{min-height:220px}main{padding-left:15px;padding-right:15px}header{padding:17px 16px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+<header><div class="brand">KING <b>BEER</b> ✦</div><div class="top-pill">🥤 Sodas italianas · 0% alcohol</div></header>
+<main>
+<section class="hero"><span class="kicker">✨ Tu antojo tiene respuesta</span><h1>¿Qué sabor va <span class="gradient">contigo?</span></h1><p>Cuéntale a nuestra IA qué se te antoja. Te ayudará a descubrir una combinación de soda italiana con los ingredientes de King Beer.</p></section>
+<div class="grid">
+<section class="card">
+<h2>Personaliza tu antojo</h2><p class="muted">Elige tus gustos o salta directo al chat y cuéntanos con tus propias palabras.</p>
+<label class="label">¿Qué perfil de sabor te provoca?</label><div class="chips" id="flavors">
+<button class="chip" data-v="dulce">🍓 Dulce</button><button class="chip" data-v="ácido">🍋 Ácido</button><button class="chip" data-v="frutal">🍇 Frutal</button><button class="chip" data-v="tropical">🥭 Tropical</button><button class="chip" data-v="refrescante">🧊 Refrescante</button><button class="chip" data-v="atrevido">🪩 Algo diferente</button>
+</div>
+<label class="label" for="intensity">Intensidad</label><select id="intensity"><option>Equilibrada</option><option>Suave</option><option>Intensa</option></select>
+<label class="label" for="pearls">¿Perlas explosivas?</label><select id="pearls"><option>Sí, por favor</option><option>Sin perlas</option><option>Sorpréndeme</option></select>
+<label class="label" for="extra">¿Algún ingrediente favorito o algo que evitar?</label><textarea id="extra" placeholder="Ej.: me encanta el mango, prefiero evitar sabores muy ácidos…"></textarea>
+<button class="btn btn-main" id="sendPrefs">✨ Recomiéndame algo</button>
+<details><summary>📋 Explorar el catálogo</summary><div id="catalogContent" style="margin-top:12px">Cargando catálogo…</div></details>
+<div class="admin"><button class="btn btn-light" id="toggleAdmin">⚙️ Administración del catálogo</button><div id="adminBox" class="hidden" style="margin-top:14px"><p class="tiny">Solo personal autorizado. El catálogo se guarda en el servidor para que la IA use los cambios.</p><label class="label" for="adminPass">Clave de administración</label><input id="adminPass" type="password" autocomplete="current-password" placeholder="Clave del administrador"><div class="admin-actions"><button class="btn btn-light" id="loadAdmin">Cargar catálogo</button><button class="btn btn-light" id="saveAdmin">Guardar cambios</button><button class="btn btn-light" id="logoutAdmin">Salir</button></div><label class="label" for="catalogJson">Catálogo en formato JSON</label><textarea id="catalogJson" spellcheck="false" placeholder="Pulsa “Cargar catálogo” para editarlo…"></textarea><div id="adminStatus" class="status" role="status"></div></div></div>
+</section>
+<section class="card chat">
+<div class="chat-title"><div class="avatar">🧋</div><div><h2>Tu asistente King Beer</h2><div class="online">● Lista para recomendar</div></div></div>
+<div class="tabs"><button class="tab active" data-tab="chat">💬 Chat</button><button class="tab" data-tab="ideas">✨ Ideas rápidas</button></div>
+<div id="chatPane" style="display:flex;flex-direction:column;flex:1;min-height:0">
+<div class="messages" id="messages" aria-live="polite"><div class="bubble-msg bot">¡Holaaa! 💖 Soy la asistente de IA de King Beer. Dime qué sabor se te antoja —dulce, ácido, frutal, tropical o una mezcla inesperada— y armamos una idea con nuestro catálogo. ¿Qué se te provoca hoy?</div></div>
+<div class="typing hidden" id="typing">La IA está pensando en una combinación…</div>
+<form class="composer" id="chatForm"><textarea id="message" rows="1" maxlength="1200" placeholder="Ej.: quiero algo tropical, dulce y refrescante…" aria-label="Escribe tu mensaje"></textarea><button class="send" id="sendBtn" aria-label="Enviar mensaje" title="Enviar">➤</button></form>
+<p class="tiny">La recomendación usa el catálogo disponible. Consulta al equipo por precios y disponibilidad.</p>
+</div>
+<div id="ideasPane" class="hidden"><p class="muted">Toca una idea para enviarla al chat:</p><div class="chips"><button class="chip idea">Quiero algo dulce y frutal 🍓</button><button class="chip idea">Sorpréndeme con algo tropical 🥭</button><button class="chip idea">Busco un sabor ácido y refrescante 🍋</button><button class="chip idea">¿Qué lleva una soda italiana diferente? 🪩</button><button class="chip idea">Explícame los sabores del catálogo 📋</button></div></div>
+</section>
+</div><div class="foot">Hecho con sabor por King Beer · Burbujas, frutas y buenas ideas ✨</div>
+</main>
+<script>
+const selected = new Set();
+const $ = id => document.getElementById(id);
+let history = [], catalog = null, adminUnlocked = false, busy = false;
+document.querySelectorAll('#flavors .chip').forEach(b=>b.addEventListener('click',()=>{selected.has(b.dataset.v)?(selected.delete(b.dataset.v),b.classList.remove('active')):(selected.add(b.dataset.v),b.classList.add('active'))}));
+function preferences(){return {sabores:[...selected],intensidad:$('intensity').value,perlas:$('pearls').value,preferenciasAdicionales:$('extra').value.trim()}}
+function addMessage(role,content){const el=document.createElement('div');el.className='bubble-msg '+(role==='user'?'user':'bot');el.textContent=content;$('messages').appendChild(el);$('messages').scrollTop=$('messages').scrollHeight}
+async function sendMessage(text){text=(text||'').trim();if(!text||busy)return;busy=true;$('sendBtn').disabled=true;$('message').disabled=true;addMessage('user',text);$('typing').classList.remove('hidden');
+ try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,preferences:preferences(),history})});const data=await r.json();if(!r.ok)throw new Error(data.error||'No se pudo obtener una respuesta.');addMessage('assistant',data.answer);history.push({role:'user',content:text},{role:'assistant',content:data.answer});history=history.slice(-8)}
+ catch(e){addMessage('assistant','Uy, no pude responder esta vez. '+e.message+' Si estás probando la página por primera vez, revisa la configuración del servidor en el archivo README.')}
+ finally{$('typing').classList.add('hidden');$('sendBtn').disabled=false;$('message').disabled=false;busy=false;$('message').focus()}}
+$('chatForm').addEventListener('submit',e=>{e.preventDefault();const text=$('message').value;$('message').value='';sendMessage(text)});
+$('sendPrefs').addEventListener('click',()=>{const p=preferences();const text=`Recomiéndame una soda italiana según estas preferencias: sabores ${p.sabores.length?p.sabores.join(', '):'sorpresa'}, intensidad ${p.intensidad}, perlas ${p.perlas}. ${p.preferenciasAdicionales?'También: '+p.preferenciasAdicionales:''}`;sendMessage(text);$('chatPane').scrollIntoView({behavior:'smooth',block:'nearest'})});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));$('chatPane').classList.toggle('hidden',b.dataset.tab!=='chat');$('ideasPane').classList.toggle('hidden',b.dataset.tab!=='ideas')}));
+document.querySelectorAll('.idea').forEach(b=>b.addEventListener('click',()=>{document.querySelector('[data-tab="chat"]').click();sendMessage(b.textContent)}));
+function renderCatalog(data){const host=$('catalogContent');host.replaceChildren();for(const [category,items] of Object.entries(data.categories||{})){const block=document.createElement('div');const title=document.createElement('b');title.textContent=category[0].toUpperCase()+category.slice(1)+': ';block.appendChild(title);const wrap=document.createElement('div');wrap.className='catalog-chips';items.forEach(name=>{const s=document.createElement('span');s.textContent=name;wrap.appendChild(s)});block.appendChild(wrap);host.appendChild(block)}}
+async function loadCatalog(){try{const r=await fetch('/api/catalog');if(!r.ok)throw Error('No se pudo cargar el catálogo');catalog=await r.json();renderCatalog(catalog)}catch(e){$('catalogContent').textContent='No se pudo cargar el catálogo. Asegúrate de que el servidor esté encendido.'}}
+$('toggleAdmin').addEventListener('click',()=>$('adminBox').classList.toggle('hidden'));
+function adminStatus(msg,error=false){$('adminStatus').textContent=msg;$('adminStatus').classList.toggle('error',error)}
+async function adminRequest(url,method='POST',body={}){const password=$('adminPass').value;const r=await fetch(url,{method,headers:{'Content-Type':'application/json','x-admin-password':password},body:JSON.stringify(body)});const data=await r.json().catch(()=>({}));if(!r.ok)throw Error(data.error||'Solicitud no válida');return data}
+$('loadAdmin').addEventListener('click',async()=>{try{await adminRequest('/api/admin/login-check');const data=await (await fetch('/api/catalog')).json();$('catalogJson').value=JSON.stringify(data,null,2);adminUnlocked=true;adminStatus('Acceso autorizado. Puedes editar el JSON y guardar.')}catch(e){adminUnlocked=false;adminStatus(e.message,true)}});
+$('saveAdmin').addEventListener('click',async()=>{if(!adminUnlocked){adminStatus('Primero pulsa “Cargar catálogo” y verifica la clave.',true);return}try{const data=JSON.parse($('catalogJson').value);const saved=await adminRequest('/api/admin/catalog','PUT',data);catalog=saved.catalog;renderCatalog(catalog);adminStatus('¡Catálogo guardado! La IA usará los cambios en las próximas respuestas.')}catch(e){adminStatus(e instanceof SyntaxError?'El JSON no es válido. Revisa comas, comillas y corchetes.':e.message,true)}});
+$('logoutAdmin').addEventListener('click',()=>{adminUnlocked=false;$('adminPass').value='';$('catalogJson').value='';adminStatus('Sesión cerrada.')});
+const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduce){for(let i=0;i<22;i++){const b=document.createElement('span');b.className='bubble';const size=12+Math.random()*45;b.style.width=size+'px';b.style.height=size+'px';b.style.left=Math.random()*100+'%';b.style.animationDuration=(12+Math.random()*20)+'s';b.style.animationDelay=(-Math.random()*25)+'s';$('bubbles').appendChild(b)}}
+loadCatalog();
+</script>
+</body></html>
