@@ -3,26 +3,14 @@
   functions = "netlify/functions"
   command = "npm run build"
 
-[[redirects]]
-  from = "/api/chat"
-  to = "/.netlify/functions/chat"
-  status = 200
-  force = true
+# API routes are declared in each function's `config.path`, so rate limits
+# also apply to every way the function can be reached.
 
-[[redirects]]
-  from = "/api/catalog"
-  to = "/.netlify/functions/catalog"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/login-check"
-  to = "/.netlify/functions/admin-login"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/admin/catalog"
-  to = "/.netlify/functions/admin-catalog"
-  status = 200
-  force = true
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { getStore } from "@netlify/blobs";
 
 export const DEFAULT_CATALOG = {
@@ -19,6 +20,8 @@ export async function getCatalog() {
 
 export async function saveCatalog(catalog) {
   const store = getStore("king-beer-data");
+  const previous = await store.get("catalog", { type: "json" });
+  if (previous) await store.setJSON("catalog-previous", previous);
   await store.setJSON("catalog", catalog);
 }
 
@@ -29,11 +32,16 @@ export function json(data, status = 200) {
   });
 }
 
+const sha256 = value => createHash("sha256").update(value).digest();
+
 export function checkAdmin(request) {
   const expected = process.env.ADMIN_PASSWORD;
   const supplied = request.headers.get("x-admin-password") || "";
-  if (!expected) return { ok: false, response: json({ error: "Falta configurar ADMIN_PASSWORD en las variables de entorno de Netlify." }, 503) };
-  if (supplied.length !== expected.length || supplied !== expected) {
+  if (!expected) {
+    console.error("ADMIN_PASSWORD is not configured.");
+    return { ok: false, response: json({ error: "El panel de administración no está disponible." }, 503) };
+  }
+  if (!timingSafeEqual(sha256(supplied), sha256(expected))) {
     return { ok: false, response: json({ error: "Clave de administración incorrecta." }, 401) };
   }
   return { ok: true };
